@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="MCACalibrator.View.Tab.MCA.MCASettingEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:citcont="clr-namespace:CITHEPLib.Controls;assembly=CITHEPLib"
+             xmlns:mcatab="clr-namespace:MCACalibrator.View.Tab.MCA"
+             mc:Ignorable="d" 
+            >
+    <Grid>
+        <Expander ExpandDirection="Right" IsExpanded="True">
+            <Expander.Header>
+                <TextBlock Text="Setting" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Width="Auto">
+                    <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            <SkewTransform AngleX="0" AngleY="0"/>
+                            <RotateTransform Angle="-90"/>
+                            <TranslateTransform X="0" Y="0"/>
+                        </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            <SkewTransform AngleX="0" AngleY="0"/>
+                            <RotateTransform Angle="0"/>
+                            <TranslateTransform X="0" Y="0"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+            </Expander.Header>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid>
+                    <Grid.RowDefinitions>
+
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="ProbeSetting" Grid.Row="0">
+                        <mcatab:MCAProbeSettingEditor Setting="{Binding Setting.ProbeSetting, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                    </GroupBox>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Grid.Column="0" Header="Channel0">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel>
+                                    <Expander Header="HV">
+                                        <mcatab:MCAHVSettingEditor Setting="{Binding Setting.HV0, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                    </Expander>
+                                    <Expander Header="Trigger">
+                                        <mcatab:MCATriggerSettingEditor  Setting="{Binding Setting.TriggerSetting0, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                    </Expander>
+                                    <Expander Header="Shaping">
+                                        <mcatab:MCAShapingEditor  Setting="{Binding Setting.ShapingSetting0, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                    </Expander>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                        <GroupBox Grid.Column="1" Header="Channel1">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel>
+                                    <Expander Header="HV">
+                                        <mcatab:MCAHVSettingEditor Setting="{Binding Setting.HV1, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                    </Expander>
+                                    <Expander Header="Trigger">
+                                        <mcatab:MCATriggerSettingEditor  Setting="{Binding Setting.TriggerSetting1, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                    </Expander>
+                                    <Expander Header="Shaping">
+                                        <mcatab:MCAShapingEditor  Setting="{Binding Setting.ShapingSetting1, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                    </Expander>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Expander>
+    </Grid>
+</UserControl>

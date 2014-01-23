@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="MCACalibrator.View.Tab.FitResultDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ag="clr-namespace:WpfAutoGrid;assembly=WpfAutoGrid"
+             xmlns:pl="clr-namespace:CITHEPLib.PeakLocator;assembly=CITHEPLib"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=pl:FitResult}"
+             >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Label Content="Resolution:"/>
+            <Label Content="{Binding Resolution}" ContentStringFormat="0.0000"/>
+        </StackPanel>
+        <ag:AutoGrid ColumnCount="8" Grid.Row="1">
+
+            <Label Content="mu"/>
+            <Label Content="{Binding mu}" ContentStringFormat="0.00" HorizontalAlignment="Right"/>
+            <Label Content="±"/>
+            <Label Content="{Binding err_mu}" ContentStringFormat="0.00"/>
+
+            <Label Content="sigma"/>
+            <Label Content="{Binding sigma}" ContentStringFormat="0.00" HorizontalAlignment="Right"/>
+            <Label Content="±"/>
+            <Label Content="{Binding err_sigma}" ContentStringFormat="0.00"/>
+
+
+            <Label Content="m"/>
+            <Label Content="{Binding m}" ContentStringFormat="0.00" HorizontalAlignment="Right"/>
+            <Label Content="±"/>
+            <Label Content="{Binding err_m}" ContentStringFormat="0.00"/>
+
+            <Label Content="c"/>
+            <Label Content="{Binding c}" ContentStringFormat="0.00" HorizontalAlignment="Right"/>
+            <Label Content="±"/>
+            <Label Content="{Binding err_c}" ContentStringFormat="0.00"/>
+
+
+            <Label Content="nsig"/>
+            <Label Content="{Binding nsig}" ContentStringFormat="0.00" HorizontalAlignment="Right"/>
+            <Label Content="±"/>
+            <Label Content="{Binding err_nsig}" ContentStringFormat="0.00"/>
+
+            <Label Content="nbkg"/>
+            <Label Content="{Binding nbkg}" ContentStringFormat="0.00" HorizontalAlignment="Right"/>
+            <Label Content="±"/>
+            <Label Content="{Binding err_nbkg}" ContentStringFormat="0.00"/>
+
+            <Label Content="Chi2"/>
+            <Label Content="{Binding fmin}" ContentStringFormat="0.00"/>
+            <Label Content=""/>
+            <Label Content=""/>
+
+            <Label Content="nbin"/>
+            <Label Content="{Binding nbin}" ContentStringFormat="0.00"/>
+            <Label Content=""/>
+            <Label Content=""/>
+
+        </ag:AutoGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label Content="Fit Converged:"/>
+            <Label Content="{Binding FitConverged}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

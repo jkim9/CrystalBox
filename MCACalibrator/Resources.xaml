@@ -1,0 +1,124 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:cit="clr-namespace:CITHEPLib.Converters;assembly=CITHEPLib"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib"
+                    xmlns:cdw="clr-namespace:CAENDigitizerWrapper;assembly=CAENDigitizerWrapper"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+                    xmlns:local="clr-namespace:MCACalibrator"
+                    >
+    <cit:Array2DataPointConverter x:Key="Array2DataPointConverter"/>
+    <cit:ConditionalConverter x:Key="ConditionalConverter"/>
+    <cit:DivideConverter x:Key="DivideConverter"/>
+    <cit:GreenRedConverter x:Key="GreenRedConverter"/>
+    <cit:InverseConverter x:Key="InverseInverter"/>
+    <cit:DataPointsConverter x:Key="DataPointsConverter"/>
+    <cit:IntHistogramToDatapointsConverter x:Key="IntHistogramToDatapointsConverter"/>
+    <cit:TimeSeriesConverter x:Key="TimeSeriesConverter"/>
+    <cit:HVSwitchTextConverter x:Key="HVSwitchTextConverter"/>
+    <!--see caveat on shadowcache if this doesn't workd-->
+    <ObjectDataProvider x:Key="DPPAcqMode"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+DPPAcqMode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="DPPSaveParam"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+DPPSaveParam" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="VirtualProbeMode"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+VirtualProbeMode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="VirtualProbe1Mode"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+VirtualProbe1Mode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="VirtualProbe2Mode"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+VirtualProbe2Mode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="DigitalProbeMode"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+DigitalProbeMode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="InputRange"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+InputRange" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="PulsePolarityType"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+PulsePolarityType" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="AcquisitionModeType"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+AcquisitionModeType" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="BaselineAveragingWindowType"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+BaselineAveragingWindowType" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="PeakAveragingWindowType"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+PeakAveragingWindowType" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="TriggerMode"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="cdw:DT5780+TriggerMode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+
+    <ObjectDataProvider x:Key="ProbeMode"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="local:ProbeSetting+ProbeMode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+</ResourceDictionary>

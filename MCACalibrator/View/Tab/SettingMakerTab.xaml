@@ -1,0 +1,286 @@
+﻿<UserControl x:Class="MCACalibrator.View.Tab.SettingMakerTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mcatab="clr-namespace:MCACalibrator.View.Tab.MCA"
+             xmlns:oxy="http://oxyplot.codeplex.com"
+             xmlns:citcont="clr-namespace:CITHEPLib.Controls;assembly=CITHEPLib"
+             xmlns:local="clr-namespace:MCACalibrator.ViewModel"
+             xmlns:ag="clr-namespace:WpfAutoGrid;assembly=WpfAutoGrid"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             d:DataContext="{d:DesignInstance Type=local:SettingMaker}"
+             mc:Ignorable="d" 
+             >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="ControlButton" TargetType="Button">
+                <Setter Property="Width" Value="75"/>
+                <Setter Property="Padding" Value="5"/>
+            </Style>
+            <sys:Double x:Key="TimeScale">0.01</sys:Double>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="top">
+            <Label>Control:</Label>
+            <Button Style="{StaticResource ControlButton}" Content="Start"
+                    Command="{Binding StartTestRunCommand}"/>
+            <Label Content="Position"/>
+            <Button Style="{StaticResource ControlButton}" Content="Move To"
+                    Command="{Binding MoveToCommand}"
+                    CommandParameter="{Binding ElementName=TargetPosition, Path=Value}"/>
+            <xctk:IntegerUpDown Width="50" x:Name="TargetPosition" Value="{Binding TargetPosition}"/>
+           
+            
+            <Label Content="Timeout"/>
+            <xctk:DecimalUpDown Value="{Binding Timeout}"/>
+            <Label Content="MaxSample"/>
+            <xctk:IntegerUpDown Value="{Binding MaxSample}"/>
+            
+            <Button Style="{StaticResource ControlButton}" Content="Clear"
+                    Command="{Binding ClearPlotCommand}"/>
+
+            <Button Style="{StaticResource ControlButton}" Content="SWTrigger"
+                    Command="{Binding SendSWTriggerCommand}"/>
+            
+            <Button Content="Debug" Command="{Binding DebugCommand}"/>
+            <Button Content="Simu" Command="{Binding StartSimulationRunCommand}"/>
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MinWidth="400"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="A"/>
+                        <ColumnDefinition SharedSizeGroup="A"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Add" Grid.Column="0" Command="{Binding AddSettingCommand}"/>
+                    <Button Content="Remove" Grid.Column="1" Command="{Binding RemoveSettingCommand}" CommandParameter="{Binding ElementName=SettingList, Path=SelectedItem}"/>
+                </Grid>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding MCASettings}" CanUserAddRows="false"
+                         AutoGenerateColumns="False" Name="SettingList" HeadersVisibility="Column"
+                         SelectedItem="{Binding CurrentSetting}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="False" Header="Name"  Binding="{Binding Path=Name}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button Grid.Row="2" Content="Save" Command="{Binding SaveSettingCommand}"/>
+            </Grid>
+
+            <mcatab:MCASettingEditor Grid.Column="1" Setting="{Binding ElementName=SettingList, Path=SelectedItem}"/>
+
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <oxy:Plot Grid.Row="0" Grid.Column="0" Title="Channel0 Waveform" TitleFontSize="10">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Bottom" Title="us" TitleColor="Black"/>
+                        <oxy:LinearAxis Position="Left"/>
+                    </oxy:Plot.Axes>
+                    <citcont:ObservableLineSeries Title="{Binding CurrentSetting.ProbeSetting.VirtualProbe1Mode}">
+                        <citcont:ObservableLineSeries.ItemsSource>
+                            <MultiBinding Converter="{StaticResource TimeSeriesConverter}">
+                                <Binding Path="MCAData.Channel0VirtualProbe1"/>
+                                <Binding Source="{StaticResource TimeScale}"/>
+                                <Binding ElementName="dupChannel0Trace1Scale" Path="Value"/>
+                                <Binding ElementName="dupChannel0Trace1Shift" Path="Value"/>
+                            </MultiBinding>
+                        </citcont:ObservableLineSeries.ItemsSource>
+                    </citcont:ObservableLineSeries>
+                    <citcont:ObservableLineSeries Title="{Binding CurrentSetting.ProbeSetting.VirtualProbe2Mode}">
+                        <citcont:ObservableLineSeries.ItemsSource>
+                            <MultiBinding Converter="{StaticResource TimeSeriesConverter}">
+                                <Binding Path="MCAData.Channel0VirtualProbe2"/>
+                                <Binding Source="{StaticResource TimeScale}"/>
+                                <Binding ElementName="dupChannel0Trace2Scale" Path="Value"/>
+                                <Binding ElementName="dupChannel0Trace2Shift" Path="Value"/>
+                            </MultiBinding>
+                        </citcont:ObservableLineSeries.ItemsSource>
+                    </citcont:ObservableLineSeries>
+                    <citcont:ObservableLineSeries Title="{Binding CurrentSetting.ProbeSetting.DigitalProbeMode}">
+                        <citcont:ObservableLineSeries.ItemsSource>
+                            <MultiBinding Converter="{StaticResource TimeSeriesConverter}">
+                                <Binding Path="MCAData.Channel0DigitalProbe1"/>
+                                <Binding Source="{StaticResource TimeScale}"/>
+                                <Binding ElementName="dupChannel0DTrace1Scale" Path="Value"/>
+                                <Binding ElementName="dupChannel0DTrace1Shift" Path="Value"/>
+                            </MultiBinding>
+                        </citcont:ObservableLineSeries.ItemsSource>
+                    </citcont:ObservableLineSeries>
+                    <citcont:ObservableLineSeries Title="Trigger">
+                        <citcont:ObservableLineSeries.ItemsSource>
+                            <MultiBinding Converter="{StaticResource TimeSeriesConverter}">
+                                <Binding Path="MCAData.Channel0DigitalProbe2"/>
+                                <Binding Source="{StaticResource TimeScale}"/>
+                                <Binding ElementName="dupChannel0DTrace2Scale" Path="Value"/>
+                                <Binding ElementName="dupChannel0DTrace2Shift" Path="Value"/>
+                            </MultiBinding>
+                        </citcont:ObservableLineSeries.ItemsSource>
+                    </citcont:ObservableLineSeries>
+                </oxy:Plot>
+                <oxy:Plot Grid.Row="0" Grid.Column="1" Title="Channel1 Waveform" TitleFontSize="10">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Bottom" Title="us" TitleColor="Black"/>
+                        <oxy:LinearAxis Position="Left"/>
+                    </oxy:Plot.Axes>
+                    <citcont:ObservableLineSeries Title="{Binding CurrentSetting.ProbeSetting.VirtualProbe1Mode}">
+                        <citcont:ObservableLineSeries.ItemsSource>
+                            <MultiBinding Converter="{StaticResource TimeSeriesConverter}">
+                                <Binding Path="MCAData.Channel1VirtualProbe1"/>
+                                <Binding Source="{StaticResource TimeScale}"/>
+                                <Binding ElementName="dupChannel1Trace1Scale" Path="Value"/>
+                                <Binding ElementName="dupChannel1Trace1Shift" Path="Value"/>
+                            </MultiBinding>
+                        </citcont:ObservableLineSeries.ItemsSource>
+                    </citcont:ObservableLineSeries>
+                    <citcont:ObservableLineSeries Title="{Binding CurrentSetting.ProbeSetting.VirtualProbe2Mode}">
+                        <citcont:ObservableLineSeries.ItemsSource>
+                            <MultiBinding Converter="{StaticResource TimeSeriesConverter}">
+                                <Binding Path="MCAData.Channel1VirtualProbe2"/>
+                                <Binding Source="{StaticResource TimeScale}"/>
+                                <Binding ElementName="dupChannel1Trace2Scale" Path="Value"/>
+                                <Binding ElementName="dupChannel1Trace2Shift" Path="Value"/>
+                            </MultiBinding>
+                        </citcont:ObservableLineSeries.ItemsSource>
+                    </citcont:ObservableLineSeries>
+                    <citcont:ObservableLineSeries Title="{Binding CurrentSetting.ProbeSetting.DigitalProbeMode}">
+                        <citcont:ObservableLineSeries.ItemsSource>
+                            <MultiBinding Converter="{StaticResource TimeSeriesConverter}">
+                                <Binding Path="MCAData.Channel1DigitalProbe1"/>
+                                <Binding Source="{StaticResource TimeScale}"/>
+                                <Binding ElementName="dupChannel1DTrace1Scale" Path="Value"/>
+                                <Binding ElementName="dupChannel1DTrace1Shift" Path="Value"/>
+                            </MultiBinding>
+                        </citcont:ObservableLineSeries.ItemsSource>
+                    </citcont:ObservableLineSeries>
+                    <citcont:ObservableLineSeries Title="Trigger">
+                        <citcont:ObservableLineSeries.ItemsSource>
+                            <MultiBinding Converter="{StaticResource TimeSeriesConverter}">
+                                <Binding Path="MCAData.Channel1DigitalProbe2"/>
+                                <Binding Source="{StaticResource TimeScale}"/>
+                                <Binding ElementName="dupChannel1DTrace2Scale" Path="Value"/>
+                                <Binding ElementName="dupChannel1DTrace2Shift" Path="Value"/>
+                            </MultiBinding>
+                        </citcont:ObservableLineSeries.ItemsSource>
+                    </citcont:ObservableLineSeries>
+                </oxy:Plot>
+                <oxy:Plot Grid.Row="1" Grid.Column="0" Title="Channel0 Hist" TitleFontSize="10">
+                    <citcont:ObservableLineSeries ItemsSource="{Binding MCAData.Channel0Hist.Channel,
+                        Converter={StaticResource Array2DataPointConverter}}"/>
+                </oxy:Plot>
+                <oxy:Plot Grid.Row="1" Grid.Column="1" Title="Channel1 Hist" TitleFontSize="10">
+                    <citcont:ObservableLineSeries ItemsSource="{Binding MCAData.Channel1Hist.Channel,
+                        Converter={StaticResource Array2DataPointConverter}}"/>
+                </oxy:Plot>
+            </Grid>
+            <Grid Grid.Column="3">
+                <Expander ExpandDirection="Left" IsExpanded="False">
+                    <Expander.Header>
+                        <TextBlock Text="Scaling and Shifting" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Width="Auto">
+                            <TextBlock.LayoutTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                    <SkewTransform AngleX="0" AngleY="0"/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </TransformGroup>
+                            </TextBlock.LayoutTransform>
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                    <SkewTransform AngleX="0" AngleY="0"/>
+                                    <RotateTransform Angle="0"/>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </Expander.Header>
+                    <ScrollViewer>
+                        <StackPanel>
+                            <GroupBox Header="Channel0">
+                                <ag:AutoGrid ColumnCount="2">
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.VirtualProbe1Mode}" ContentStringFormat="{}{0} Shift"/>
+                                    <xctk:DecimalUpDown Name="dupChannel0Trace1Shift" Value="0"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.VirtualProbe1Mode}" ContentStringFormat="{}{0} Scale"/>
+                                    <xctk:DecimalUpDown Name="dupChannel0Trace1Scale" Value="1"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.VirtualProbe2Mode}" ContentStringFormat="{}{0} Shift"/>
+                                    <xctk:DecimalUpDown Name="dupChannel0Trace2Shift" Value="-8000"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.VirtualProbe2Mode}" ContentStringFormat="{}{0} Scale"/>
+                                    <xctk:DecimalUpDown Name="dupChannel0Trace2Scale" Value="1"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.DigitalProbeMode}" ContentStringFormat="{}{0} Shift"/>
+                                    <xctk:DecimalUpDown Name="dupChannel0DTrace1Shift" Value="0"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.DigitalProbeMode}" ContentStringFormat="{}{0} Scale"/>
+                                    <xctk:DecimalUpDown Name="dupChannel0DTrace1Scale" Value="100"/>
+
+                                    <Label Content="Trigger Shift"/>
+                                    <xctk:DecimalUpDown Name="dupChannel0DTrace2Shift" Value="0"/>
+
+                                    <Label Content="Trigger Scale"/>
+                                    <xctk:DecimalUpDown Name="dupChannel0DTrace2Scale" Value="100"/>
+
+                                </ag:AutoGrid>
+                            </GroupBox>
+                            <GroupBox Header="Channel1">
+                                <ag:AutoGrid ColumnCount="2">
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.VirtualProbe1Mode}" ContentStringFormat="{}{0} Shift"/>
+                                    <xctk:DecimalUpDown Name="dupChannel1Trace1Shift" Value="0"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.VirtualProbe1Mode}" ContentStringFormat="{}{0} Scale"/>
+                                    <xctk:DecimalUpDown Name="dupChannel1Trace1Scale" Value="1"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.VirtualProbe2Mode}" ContentStringFormat="{}{0} Shift"/>
+                                    <xctk:DecimalUpDown Name="dupChannel1Trace2Shift" Value="-8000"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.VirtualProbe2Mode}" ContentStringFormat="{}{0} Scale"/>
+                                    <xctk:DecimalUpDown Name="dupChannel1Trace2Scale" Value="1"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.DigitalProbeMode}" ContentStringFormat="{}{0} Shift"/>
+                                    <xctk:DecimalUpDown Name="dupChannel1DTrace1Shift" Value="0"/>
+
+                                    <Label Content="{Binding CurrentSetting.ProbeSetting.DigitalProbeMode}" ContentStringFormat="{}{0} Scale"/>
+                                    <xctk:DecimalUpDown Name="dupChannel1DTrace1Scale" Value="100"/>
+
+                                    <Label Content="Trigger Shift"/>
+                                    <xctk:DecimalUpDown Name="dupChannel1DTrace2Shift" Value="0"/>
+
+                                    <Label Content="Trigger Scale"/>
+                                    <xctk:DecimalUpDown Name="dupChannel1DTrace2Scale" Value="100"/>
+
+                                </ag:AutoGrid>
+                            </GroupBox>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Expander>
+
+            </Grid>
+
+        </Grid>
+    </DockPanel>
+</UserControl>

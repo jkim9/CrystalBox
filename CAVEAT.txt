@@ -1,0 +1,19 @@
+11/17/2013
+
+64 bit library for linear motor:
+http://www.arcus-technology.com/support/downloads/category/17-usb-terminal.html
+
+11/17/2013
+
+Install Linear Motor Driver on Windows 8:
+http://support.arcus-technology.com/entries/22875612-Performax-USB-Windows-8-Workaround
+
+11/17/2013
+
+Workaround: Added path to dll to PATH since visual studio designer
+shadowcopy doesn't copy all the dll there. Without this it will compile
+just fine but xaml designer will not work(which is a real pain).
+%PATH%;C:\Users\piti\Desktop\CrystalBox\CAENDigitizerWrapper\vendor\x86;C:\Users\piti\Desktop\CrystalBox\LinearMotor\vendor\x86
+http://msdn.microsoft.com/en-us/library/windows/desktop/ms682586(v=vs.85).aspx
+
+http://social.msdn.microsoft.com/Forums/vstudio/en-US/a68b56f8-d14d-47c0-b253-633cd2629249/visual-studio-2012-wpf-designer-satellite-assemblies?forum=wpf

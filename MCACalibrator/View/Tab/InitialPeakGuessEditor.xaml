@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="MCACalibrator.View.Tab.InitialPeakGuessEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:ag="clr-namespace:WpfAutoGrid;assembly=WpfAutoGrid"
+             xmlns:pl="clr-namespace:CITHEPLib.PeakLocator;assembly=CITHEPLib"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=pl:InitialPeakGuess}">
+    <ag:AutoGrid ColumnCount="4">
+        <Label Content="mu"/>
+        <xctk:DecimalUpDown Value="{Binding mu}" FormatString="0.00"/>
+
+        <Label Content="sigma"/>
+        <xctk:DecimalUpDown Value="{Binding sigma}" FormatString="0.00"/>
+
+        <Label Content="m"/>
+        <xctk:DecimalUpDown Value="{Binding m}" FormatString="0.00"/>
+
+        <Label Content="c"/>
+        <xctk:DecimalUpDown Value="{Binding c}" FormatString="0.00"/>
+
+        <Label Content="nsig"/>
+        <xctk:DecimalUpDown Value="{Binding nsig}" FormatString="0.00"/>
+
+        <Label Content="nbkg"/>
+        <xctk:DecimalUpDown Value="{Binding nbkg}" FormatString="0.00"/>
+
+
+        <Label Content="Lowerbound Index"/>
+        <xctk:IntegerUpDown Value="{Binding lowerboundIndex}" FormatString="0.00"/>
+        
+        <Label Content="Upperbound Index"/>
+        <xctk:IntegerUpDown Value="{Binding upperboundIndex}" FormatString="0.00"/>
+
+    </ag:AutoGrid>
+</UserControl>

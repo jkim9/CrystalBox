@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="MCACalibrator.View.Tab.PeripheralConnectionMonitor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cit="clr-namespace:CITHEPLib.Converters;assembly=CITHEPLib"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Connect" x:Name="Connect" Command="{Binding ConnectPeripheralCommand}"/>
+            <Label Content="Motor:"/>
+            <Rectangle MinWidth="20" Margin="4" Fill="{Binding PeripheralConnection.MotorConnected, Converter={StaticResource GreenRedConverter}}"/>
+            <!--<Label>
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource ConditionalConverter}">
+                        <Binding Path="PeripheralConnection.MotorConnected"/>
+                        <Binding Source="OK"/>
+                        <Binding Source="NC"/>
+                    </MultiBinding>
+                </Label.Content>
+            </Label>-->
+            
+            <Label Content="MCA:"/>
+            <Rectangle MinWidth="20" Margin="4" Fill="{Binding PeripheralConnection.MCAConnected, Converter={StaticResource GreenRedConverter}}"/>
+
+            <!--<Label>
+                <MultiBinding Converter="{StaticResource ConditionalConverter}">
+                    <Binding Path="PeripheralConnection.MCAConnected"/>
+                    <Binding Source="OK"/>
+                    <Binding Source="NC"/>
+                </MultiBinding>
+            </Label>-->
+            <Label Content="Thermometer:"/>
+            <Rectangle MinWidth="20" Margin="4" Fill="{Binding PeripheralConnection.ThermometerConnected, Converter={StaticResource GreenRedConverter}}"/>
+            <!--<Label>
+                <MultiBinding Converter="{StaticResource ConditionalConverter}">
+                    <Binding Path="PeripheralConnection.ThermometerConnected"/>
+                    <Binding Source="OK"/>
+                    <Binding Source="NC"/>
+                </MultiBinding>
+            </Label>-->
+        </StackPanel>
+    </Grid>
+</UserControl>

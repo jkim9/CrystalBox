@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="MCACalibrator.View.Tab.HVMonitor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ag="clr-namespace:WpfAutoGrid;assembly=WpfAutoGrid"
+             xmlns:cit="clr-namespace:CITHEPLib.Converters;assembly=CITHEPLib"
+             mc:Ignorable="d" 
+            >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <ag:AutoGrid ColumnCount="2" ChildMargin="4">
+            <ag:AutoGrid.Background>
+                <MultiBinding Converter="{StaticResource ConditionalConverter}">
+                    <Binding Path="Powered"/>
+                    <Binding>
+                        <Binding.Source>
+                            <SolidColorBrush Color="GreenYellow"></SolidColorBrush>
+                        </Binding.Source>
+                    </Binding>
+                    <Binding Source="{x:Static SystemColors.WindowBrush}"/>
+                </MultiBinding>
+            </ag:AutoGrid.Background>
+            <Label Content="V"/>
+            <Label Content="{Binding Voltage}"/>
+
+            <Label Content="I(mA)"/>
+            <Label Content="{Binding Current}"/>
+
+            <Label Content="Status"/>
+            <Label Content="xxx"/>
+
+            <Label Content="Powered"/>
+            <Label Content="{Binding Powered}"/>
+
+            <Label Content="RampUp"/>
+            <Label Content="{Binding RampUp}"/>
+
+            <Label Content="RampDown"/>
+            <Label Content="{Binding RampDown}"/>
+
+            <Label Content="OverCurrent"/>
+            <Label Content="{Binding OverCurrent}"/>
+
+            <Label Content="OverVoltage"/>
+            <Label Content="{Binding OverVoltage}"/>
+
+
+            <Label Content="UnderVoltage"/>
+            <Label Content="{Binding UnderVoltage}"/>
+
+            <Label Content="MaxV"/>
+            <Label Content="{Binding MaxVoltage}"/>
+
+            <Label Content="MaxI"/>
+            <Label Content="{Binding MaxCurrent}"/>
+
+            <Label Content="Disabled"/>
+            <Label Content="{Binding Disabled}"/>
+
+        </ag:AutoGrid>
+    </Grid>
+</UserControl>

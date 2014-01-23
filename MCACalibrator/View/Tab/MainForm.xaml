@@ -1,0 +1,150 @@
+﻿<UserControl x:Class="MCACalibrator.View.Tab.MainForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:oxy="http://oxyplot.codeplex.com"
+             xmlns:tab="clr-namespace:MCACalibrator.View.Tab"
+             xmlns:vm ="clr-namespace:MCACalibrator.ViewModel"
+             xmlns:cit="clr-namespace:CITHEPLib.Controls;assembly=CITHEPLib"
+             d:DataContext="{d:DesignInstance Type=vm:MainViewModel, IsDesignTimeCreatable=False}"
+             mc:Ignorable="d"
+             >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Expander ExpandDirection="Right" IsExpanded="True" Grid.Column="0">
+            <Expander.Header>
+                <TextBlock Text="Run List" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Width="Auto">
+                    <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            <SkewTransform AngleX="0" AngleY="0"/>
+                            <RotateTransform Angle="-90"/>
+                            <TranslateTransform X="0" Y="0"/>
+                        </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            <SkewTransform AngleX="0" AngleY="0"/>
+                            <RotateTransform Angle="0"/>
+                            <TranslateTransform X="0" Y="0"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+            </Expander.Header>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <!--<Button Content="Start" x:Name="startBtn" Click="startBtn_Click"/>-->
+                <Button Grid.Row="1" Content="Save Experiment" Command="{Binding SaveExperimentCommand}"/>
+                <tab:RunList Grid.Row="2" x:Name="RunList"/>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Fit Channel0" Grid.Column="0" Command="{Binding FitChannel0Command}"/>
+                    <Button Content="Fit Channel1" Grid.Column="1" Command="{Binding FitChannel1Command}"/>
+                    <Button Content="Fit All" Grid.Column="2" Command="{Binding FitAllChannelCommand}"/>
+                </Grid>
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="Run Quality Control Test" Command="{Binding RunQCTestCommand}"/>
+                    <TextBlock Grid.Column="1" Background="{Binding QCData.TestOK, Converter={StaticResource GreenRedConverter}}"></TextBlock>
+                </Grid>
+                <!--<Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="242*"/>
+                    <ColumnDefinition Width="75*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding ElementName=RunList, Path=SelectedItem.Log.MotorPosition}" Grid.ColumnSpan="2" Margin="0,0,-0.2,0"/>
+            </Grid>-->
+
+            </Grid>
+        </Expander>
+        <Expander ExpandDirection="Right" Grid.Column="1" IsExpanded="False">
+            <Expander.Header>
+                <TextBlock Text="Fit Panel" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Width="Auto">
+                    <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            <SkewTransform AngleX="0" AngleY="0"/>
+                            <RotateTransform Angle="-90"/>
+                            <TranslateTransform X="0" Y="0"/>
+                        </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            <SkewTransform AngleX="0" AngleY="0"/>
+                            <RotateTransform Angle="0"/>
+                            <TranslateTransform X="0" Y="0"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+            </Expander.Header>
+            <Grid>
+                <tab:FitPanel DataContext="{Binding ElementName=RunList, Path=SelectedItem}"/>
+            </Grid>
+        </Expander>
+        <GridSplitter Grid.Column="2" Width="5" ResizeBehavior="PreviousAndNext"/>
+        <Grid Grid.Column="3" MinWidth="200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" MinHeight="200"/>
+                <RowDefinition Height="1*" MinHeight="200"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <oxy:Plot Grid.Column="0" Title="Channel0" TitleFontSize="10">
+                    <oxy:LineSeries ItemsSource="{Binding ElementName=RunList, Path=SelectedItem.Log.MCAData.Channel0Hist.Channel,
+                                                          Converter={StaticResource Array2DataPointConverter}}"/>
+                    <cit:ObservableLineSeries ItemsSource="{Binding ElementName=RunList, Path=SelectedItem.Channel0FittedDataPoints}"/>
+                </oxy:Plot>
+                <oxy:Plot Grid.Column="1" Title="Channel1" TitleFontSize="10">
+                    <oxy:LineSeries ItemsSource="{Binding ElementName=RunList, Path=SelectedItem.Log.MCAData.Channel1Hist.Channel,
+                                                          Converter={StaticResource Array2DataPointConverter}}"/>
+                    <cit:ObservableLineSeries ItemsSource="{Binding ElementName=RunList, Path=SelectedItem.Channel1FittedDataPoints}"/>
+
+                </oxy:Plot>
+            </Grid>
+            <oxy:Plot Grid.Row="1" Title="QC Criteria" TitleFontSize="10"
+                      LegendPlacement="Outside" LegendPosition="RightTop" LegendOrientation="Vertical">
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" Title="Position" TitleColor="Black"/>
+                    <oxy:LinearAxis Position="Left" Title="Resolution" TitleColor="Black"/>
+                </oxy:Plot.Axes>
+                <oxy:ScatterSeries ItemsSource="{Binding QCData.Channel0ResolutionDataPoints}" Title="Channel0"/>
+                <oxy:LineSeries ItemsSource="{Binding QCData.Channel0FittedDataPoints}" Title="Fitted Channel0"/>
+                <oxy:ScatterSeries ItemsSource="{Binding QCData.Channel1ResolutionDataPoints}" Title="Channel1"/>
+                <oxy:LineSeries ItemsSource="{Binding QCData.Channel1FittedDataPoints}" Title="Fitted Channel1"/>
+            </oxy:Plot>
+        </Grid>
+    </Grid>
+</UserControl>

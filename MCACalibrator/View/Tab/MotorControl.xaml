@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="MCACalibrator.View.Tab.MotorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:tab="clr-namespace:MCACalibrator.View.Tab"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="EnableOnMotorConnected" TargetType="Button">
+                <Setter Property="IsEnabled" Value="{Binding MotorStatus.IsConnected}"/>
+            </Style>
+            <Style x:Key="EnableOnMotorIdle" TargetType="{x:Type Control}">
+                <Setter Property="IsEnabled" Value="{Binding MotorStatus.IsIdle}"/>
+            </Style>
+            <Style x:Key="EnableOnRunning" TargetType="{x:Type Control}">
+                <Setter Property="IsEnabled" Value="{Binding MotorStatus.IsRunning}"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel>
+            <tab:MotorStatus Margin="4"></tab:MotorStatus>
+            
+            <StackPanel Orientation="Horizontal" Margin="4">
+                <Button  Content="Move To" 
+                        Command="{Binding MotorCommand.MoveToCM}"
+                        CommandParameter="{Binding Value, ElementName=TargetPosition}"/>
+                <xctk:DecimalUpDown Width="50" Minimum="-25" Maximum="0" x:Name="TargetPosition"></xctk:DecimalUpDown>
+                <Label Content="cm"/>
+            </StackPanel>
+            
+            <Button Content="Stop" Margin="4" Style="{StaticResource EnableOnRunning}">
+                <Button.Command>
+                    <Binding Path="MotorCommand.StopMotor"/>
+                </Button.Command>
+            </Button>
+            
+            <Button Margin="4" Style="{StaticResource EnableOnMotorConnected}">
+                <Button.Content>
+                    <MultiBinding Converter="{StaticResource ConditionalConverter}" FallbackValue="On">
+                        <Binding Path="MotorStatus.Powered"/>
+                        <Binding Source="Power Off"/>
+                        <Binding Source="Power On"/>
+                    </MultiBinding>
+                </Button.Content>
+                <Button.Command>
+                    <Binding Path="MotorCommand.ToggleMotorPower"/>
+                </Button.Command>
+            </Button>
+            
+            <Button Margin="4" Style="{StaticResource EnableOnMotorIdle}" Content="Calibrate"
+                    Command="{Binding MotorCommand.CalibrateMotor}">
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

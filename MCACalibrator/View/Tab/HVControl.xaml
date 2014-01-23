@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="MCACalibrator.View.Tab.HVControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ag="clr-namespace:WpfAutoGrid;assembly=WpfAutoGrid"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:citlib="clr-namespace:CITHEPLib.Converters;assembly=CITHEPLib"
+             xmlns:tab="clr-namespace:MCACalibrator.View.Tab"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="EnableOnConnected" TargetType="{x:Type Control}">
+                <Setter Property="IsEnabled" Value="{Binding PeripheralConnection.MCAConnected, FallbackValue=False}"/>
+            </Style>
+            <Style x:Key="DecimalInput" TargetType="xctk:DecimalUpDown" BasedOn="{StaticResource EnableOnConnected}">
+                <Setter Property="Width" Value="50" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <GroupBox Header="HV 0" VerticalAlignment="Top">
+                <StackPanel>
+                    <ag:AutoGrid ColumnCount="3">
+                        <Label Content="VSet"/>
+                        <xctk:DecimalUpDown Style="{StaticResource DecimalInput}" Value="{Binding MCA.HVVSet[0]}"
+                                            Minimum="0" Maximum="{Binding MCA.HVVMax[0]}"/>
+                        <Label Content="V"></Label>
+
+                        <Label Content="ISet"/>
+                        <xctk:DecimalUpDown Style="{StaticResource DecimalInput}" Value="{Binding MCA.HVISet[0]}"/>
+                        <Label Content="mA"></Label>
+
+                        <Label Content="VMax"/>
+                        <Label Content="{Binding MCA.HVVMax[0]}"></Label>
+                        <Label Content="V"/>
+                    </ag:AutoGrid>
+                    <GroupBox Header="Status">
+                        <tab:HVMonitor DataContext="{Binding HV0Status}"></tab:HVMonitor>
+                    </GroupBox>
+                    <Button Command="{Binding ToggleHVCommand}">
+                        <Button.CommandParameter>
+                            <Binding>
+                                <Binding.Source>
+                                    <sys:Int32>0</sys:Int32>
+                                </Binding.Source>
+                            </Binding>
+                        </Button.CommandParameter>
+                        <Button.Content>
+                            <MultiBinding TargetNullValue="---" Converter="{StaticResource ConditionalConverter}">
+                                <Binding Path="HV0Status.Powered"/>
+                                <Binding Source="Off"/>
+                                <Binding Source="On"/>
+                            </MultiBinding>
+                        </Button.Content>
+                        <Button.IsEnabled>
+                            <Binding Path="PeripheralConnection.MCAConnected"/>
+                        </Button.IsEnabled>
+                    </Button>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="HV 1" VerticalAlignment="Top">
+                <StackPanel>
+                    <ag:AutoGrid ColumnCount="3">
+                        <Label Content="VSet"/>
+                        <xctk:DecimalUpDown Style="{StaticResource DecimalInput}" Value="{Binding MCA.HVVSet[1]}"
+                                            Minimum="0" Maximum="{Binding MCA.HVVMax[1]}"/>
+                        <Label Content="V"></Label>
+
+                        <Label Content="ISet"/>
+                        <xctk:DecimalUpDown Style="{StaticResource DecimalInput}" Value="{Binding MCA.HVISet[1]}"/>
+                        <Label Content="mA"></Label>
+
+                        <Label Content="VMax"/>
+                        <Label Content="{Binding MCA.HVVMax[1]}"></Label>
+                        <Label Content="V"/>
+                    </ag:AutoGrid>
+                    <GroupBox Header="Status">
+                        <tab:HVMonitor DataContext="{Binding HV1Status}"></tab:HVMonitor>
+                    </GroupBox>
+                    <Button Command="{Binding ToggleHVCommand}">
+                        <Button.CommandParameter>
+                            <Binding>
+                                <Binding.Source>
+                                    <sys:Int32>1</sys:Int32>
+                                </Binding.Source>
+                            </Binding>
+                        </Button.CommandParameter>
+                        <Button.Content>
+                            <MultiBinding TargetNullValue="---" Converter="{StaticResource ConditionalConverter}">
+                                <Binding Path="HV1Status.Powered"/>
+                                <Binding Source="Off"/>
+                                <Binding Source="On"/>
+                            </MultiBinding>
+                        </Button.Content>
+                        <Button.IsEnabled>
+                            <Binding Path="PeripheralConnection.MCAConnected"/>
+                        </Button.IsEnabled>
+                    </Button>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</UserControl>
